@@ -1,47 +1,21 @@
-import numpy as np
-import pandas as pd
-from IPython.display import display
-from tensorflow.keras.utils import to_categorical
-from sklearn.metrics import accuracy_score
+from tkinter import *
 
-ncaaRead = pd.read_csv(r"/Users/kennyburzynski/Desktop/Python/cbb (1).csv")
-NCAA = pd.DataFrame(ncaaRead)
-display(NCAA)
-print(type(NCAA))
-print(NCAA.dtypes)
+main_window = Tk()
 
-class MultivariateLinearRegression:
-    def __init__(self):
-        self.__weights = None
+# Label(main_window, text="Enter name").grid(row=0, column=0)
 
-    def fit(self, x, y):
-        x = np.concatenate( (x, np.expand_dims(np.ones(x.shape[0]), axis= 0).T), axis = 1)
-        self.__weights = np.dot(np.dot(np.linalg.inv(np.dot(x.T,x)),x.T),y)
-    def predict(self, x):
-        x = np.concatenate((x, np.expand_dims(np.ones(x.shape[0]), axis= 0).T), axis=1)
-        return np.dot(x, self.__weights)
+# Label(main_window, text= "what ur age?").grid(row =1, column=0)
 
-class MatrixRegressor:
-    def __init__(self):
-        self.linearModels = None
+# my_name = Entry(main_window, width=50, borderwidth=5)
+# my_name.grid(row=0, column=1)
 
-    def fit(self, x, y):
-        linearModels = [0] * y.shape[1]
-        for targets in range(y.shape[1]):
-            linearModels[targets] = MultivariateLinearRegression()
-            linearModels[targets].fit(x,y[:,targets])
-            self.linearModels = linearModels
+# my_age=Entry(main_window, width=50, borderwidth=5)
+# my_age.grid(row=1, column=1)
+def func(args):
+    print(args)
+Button(main_window, text="CONFERENCE_NAME", command=lambda: func("CONFERENCE_NAME"), width =50).grid(row=2, column=1)
+Button(main_window, text="CONFERENCE_NAME", command=lambda: func("CONFERENCE_NAME"), width =50).grid(row=3, column=1)
+Button(main_window, text="CONFERENCE_NAME", command=lambda: func("CONFERENCE_NAME"), width =50).grid(row=4, column=1)
 
-    def predict(self, x):
-        predictions = []
-        for models in self.linearModels:
-            predictions.append(models.predict(x))
-        return np.array(predictions).T
+main_window.mainloop()
 
-    def score(self, x, y):
-        predictions = np.round(self.predict(x), decimals= 0)
-        #predictions = to_categorical(predictions)
-        #print(y.tolist())
-        return accuracy_score(y, predictions)
-
-print(MatrixRegressor)
